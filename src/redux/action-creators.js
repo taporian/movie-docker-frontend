@@ -60,7 +60,6 @@ export const signUp = (user, history) => {
   return async function (dispatch) {
     dispatch(signUpRequest());
     try {
-      console.log("hehhe", user);
       const res = await axios({
         method: "post",
         url: URL + "/signUp",

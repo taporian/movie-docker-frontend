@@ -1,4 +1,12 @@
-import { StyledTable, THead, TBody, TFoot, TH, TR, TD } from './styled/Table.style';
+import {
+  StyledTable,
+  THead,
+  TBody,
+  TFoot,
+  TH,
+  TR,
+  TD,
+} from "./styled/Table.style";
 
 export const Table = ({ children, ...rest }) => {
   return <StyledTable {...rest}>{children}</StyledTable>;

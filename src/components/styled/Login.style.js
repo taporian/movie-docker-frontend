@@ -1,19 +1,16 @@
-import styled from 'styled-components';
-
-
+import styled from "styled-components";
 
 export const InputFormTxt = styled.input`
-font-size:20px;
-color:black;
-width: 100%;
+  font-size: 20px;
+  color: black;
+  width: 100%;
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 4px;
   resize: vertical;
-
-`
+`;
 export const InputFormSub = styled.input`
-background-color: #3d3737;
+  background-color: #3d3737;
   color: white;
   padding: 12px 20px;
   border: none;
@@ -22,75 +19,68 @@ background-color: #3d3737;
   float: right;
   &:hover {
     background-color: #4f4949;
-            }
-            @media  (max-width: 600px) {
+  }
+  @media (max-width: 600px) {
     width: 100%;
-        margin-top: 0;
-      }
-
-`
+    margin-top: 0;
+  }
+`;
 export const TextareaForm = styled.textarea`
-font-size:20px;
-color:black;
-width: 100%;
+  font-size: 20px;
+  color: black;
+  width: 100%;
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 4px;
   resize: vertical;
-`
-export const ErrorPForm = styled.p `
-        color:red;
-`
+`;
+export const ErrorPForm = styled.p`
+  color: red;
+`;
 export const LabelForm = styled.label`
   display: inline-block;
-    width: 90%;
-    text-align: left;
-    font-size:18px;
-padding: 12px 12px 12px 0;
+  width: 90%;
+  text-align: left;
+  font-size: 18px;
+  padding: 12px 12px 12px 0;
   display: inline-block;
-`
+`;
 
 export const Container = styled.div`
-border-radius: 5px;
+  border-radius: 5px;
   background-color: #f2f2f2;
   padding: 20px;
-  width:45%;
+  width: 45%;
   position: relative;
   transform: translate(60%, 20%);
-  @media  (max-width: 600px) {
+  @media (max-width: 600px) {
     transform: translate(0%, 20%);
-    width:100%
-       
-      }
-`
+    width: 100%;
+  }
+`;
 export const Col25 = styled.div`
-float: left;
+  float: left;
   width: 100%;
   margin-top: 6px;
-  
-  @media  (max-width: 600px) {
-    
-    width: 100%;
-        margin-top: 0;
-      }
 
-`
+  @media (max-width: 600px) {
+    width: 100%;
+    margin-top: 0;
+  }
+`;
 export const Col75 = styled.div`
-float: left;
+  float: left;
   width: 75%;
   margin-top: 6px;
-  @media  (max-width: 600px) {
+  @media (max-width: 600px) {
     width: 100%;
-        margin-top: 0;
-      }
-
-`
+    margin-top: 0;
+  }
+`;
 export const Row = styled.div`
-    :after{
-        content: "";
-        display: table;
-        clear: both;
-        }
-
-`
-
+  :after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+`;

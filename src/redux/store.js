@@ -1,15 +1,17 @@
 import { applyMiddleware, createStore, compose } from "redux";
-import thunk from "redux-thunk";
+import { thunk } from "redux-thunk";
 import { combineReducers } from "redux";
 
-import {authenticationReducer, 
+import {
+  authenticationReducer,
   fetchMoviesReducer,
-  createMoviesReducer, 
+  createMoviesReducer,
   deleteMoviesReducer,
-  toggleEditreducer ,
+  toggleEditreducer,
   fetchOneMoviesReducer,
   filterMoviesReducer,
-  updateMoviesReducer} from "./reducer";
+  updateMoviesReducer,
+} from "./reducer";
 
 const createRootReducer = () =>
   combineReducers({
@@ -20,8 +22,7 @@ const createRootReducer = () =>
     toggleEditreducer,
     updateMoviesReducer,
     fetchOneMoviesReducer,
-    filterMoviesReducer
-
+    filterMoviesReducer,
   });
 
 const initState = {
@@ -31,43 +32,38 @@ const initState = {
     error: "",
     loading: false,
     isAuthenticated: false,
-   
   },
-  fetchMoviesReducer:{
-    error:"",
+  fetchMoviesReducer: {
+    error: "",
     loading: false,
-    movieData:[],
-  
+    movieData: [],
   },
-  createMoviesReducer:{
-    error:"",
+  createMoviesReducer: {
+    error: "",
     loading: false,
-    createMovieData:[],
-   
+    createMovieData: [],
   },
-  deleteMoviesReducer:{
-    error:"",
+  deleteMoviesReducer: {
+    error: "",
     loading: false,
-    deleteMovieData:[],
+    deleteMovieData: [],
   },
-  updateMoviesReducer:{
-    error:"",
+  updateMoviesReducer: {
+    error: "",
     loading: false,
-    updateMovieData:[],
+    updateMovieData: [],
   },
-  fetchOneMoviesReducer:{
-    error:"",
+  fetchOneMoviesReducer: {
+    error: "",
     loading: false,
-    movieDataOne:[],
+    movieDataOne: [],
   },
-  filterMoviesReducer:{
-    error:"",
+  filterMoviesReducer: {
+    error: "",
     loading: false,
-    movieDataOne:[],
-  }
-
-
-}
+    movieDataOne: [],
+  },
+};
 
 export default function makeStore(initialState = initState) {
   let composeEnhancers = compose;

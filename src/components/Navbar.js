@@ -1,8 +1,8 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signOut } from "../redux/action-creators";
-import {Nav,Logo,NavDropDown,Menu,MenuLink} from './styled/Navbar.style'
+import { Nav, Logo, NavDropDown, Menu, MenuLink } from "./styled/Navbar.style";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -27,15 +27,14 @@ const Navbar = () => {
         <MenuLink href="/createmovie">Create Movies</MenuLink>
         <MenuLink href="/editmovie">Edit Movies</MenuLink>
         <MenuLink href="/signup">Sign Up</MenuLink>
-   
+
         {currentUser !== null ? (
-        
-        <MenuLink href="/" onClick={handleSignOut}>{currentUser}Sign Out</MenuLink>
+          <MenuLink href="/" onClick={handleSignOut}>
+            {currentUser}Sign Out
+          </MenuLink>
         ) : (
-        <MenuLink href="/signin">Sign In</MenuLink>
+          <MenuLink href="/signin">Sign In</MenuLink>
         )}
-      
-       
       </Menu>
     </Nav>
   );
