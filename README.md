@@ -47,7 +47,7 @@ COPY init.js /docker-entrypoint-initdb.d/
 
 ### Frontend Dockerfile
 
-The frontend Dockerfile uses Node.js version 16.1.0 in a multi-stage build approach due to deprecated dependencies. It installs dependencies, builds the React app for production, and then uses Nginx as the production server.
+The frontend Dockerfile uses Node.js version 16.1.0 in a multi-stage build approach. It installs dependencies, builds the React app for production, and then uses Nginx as the production server.
 
 ```dockerfile
 # Use the official Node.js runtime as the base image
