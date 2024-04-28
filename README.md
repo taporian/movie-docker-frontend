@@ -6,6 +6,11 @@ This documentation outlines the process of Dockerizing a MERN stack application.
 
 ## Approach
 
+1. **Initial Understanding**: Started by watching a brief YouTube video on Docker to understand its purpose and benefits in development workflows.
+2. **Research**: Referenced the official Docker documentation to learn how to containerize the MERN stack application.
+3. **Following a demo setup**: Initially, I followed a demo application setup from the Docker official blog post on containerization.
+4. **Additional Setups**: Since the initial blog post didn't cover Nginx setup, I referred to another reliable source for Nginx configuration details and integrated it with the existing setup.
+
 ### Backend Dockerfile
 
 The backend Dockerfile uses the official Node.js version 18 as the base image. It sets the working directory, copies the package.json files, installs dependencies, copies the application code, exposes port 3002 and defines a health check using curl.
