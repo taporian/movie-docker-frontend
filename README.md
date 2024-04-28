@@ -1,70 +1,126 @@
-# Getting Started with Create React App
+# Dockerized MERN Stack Application Documentation
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
 
-## Available Scripts
+This documentation outlines the process of Dockerizing a MERN stack application. The Dockerfiles included in the project are designed to containerize the backend (Node.js with MongoDB) and frontend (React.js with Nginx).
 
-In the project directory, you can run:
+## Approach
 
-### `npm start`
+### Backend Dockerfile
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+The backend Dockerfile uses the official Node.js version 18 as the base image. It sets the working directory, copies the package.json files, installs dependencies, copies the application code, exposes port 3002 and defines a health check using curl.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```dockerfile
+FROM node:18
 
-### `npm test`
+WORKDIR /backend
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+COPY package*.json ./
 
-### `npm run build`
+RUN npm install
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+COPY . .
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+ENV PORT=3002
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+EXPOSE 3002
 
-### `npm run eject`
+HEALTHCHECK CMD curl --fail http://localhost:3200 || exit 1
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+CMD ["npm","start"]
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### MongoDB Dockerfile
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+For the MongoDB service, the Dockerfile utilizes the official MongoDB version 5.0.3 image. It copies an initialization script for database setup during container startup for default values.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```dockerfile
+FROM mongo:5.0.3
 
-## Learn More
+COPY init.js /docker-entrypoint-initdb.d/
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Frontend Dockerfile
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+The frontend Dockerfile uses Node.js version 16.1.0 in a multi-stage build approach due to deprecated dependencies. It installs dependencies, builds the React app for production, and then uses Nginx as the production server.
 
-### Code Splitting
+```dockerfile
+# Use the official Node.js runtime as the base image
+FROM node:16.1.0 as build
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+# Set the working directory in the container
+WORKDIR /frontend
 
-### Analyzing the Bundle Size
+# Copy package.json and package-lock.json to the working directory
+COPY package*.json ./
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+# Install dependencies
+RUN npm install
 
-### Making a Progressive Web App
+# Copy the entire application code to the container
+COPY . .
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+# Build the React app for production
+RUN npm run build
 
-### Advanced Configuration
+# Use Nginx as the production server
+FROM nginx:alpine
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+# Remove the default Nginx configuration file
+RUN rm /etc/nginx/conf.d/default.conf
 
-### Deployment
+# Copy custom Nginx configuration
+COPY nginx.conf /etc/nginx/nginx.conf
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+# Copy the built React app to Nginx's web server directory
+COPY --from=build /frontend/build /usr/share/nginx/html
 
-### `npm run build` fails to minify
+# Expose port 80 for the Nginx server
+EXPOSE 80
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# Start Nginx when the container runs
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+## Challenges Faced
+
+1. Deprecated Dependencies: Managed conflicting node versions required for React and Node.js.
+2. Nginx Routing: Initially encountered 404 errors due to misconfiguration in nginx.conf file, Commenting out the line include /etc/nginx/conf.d/\*.conf; in nginx.conf resolved conflicts by ensuring only the custom Nginx configuration was used, eliminating the 404 errors.
+3. Path Configuration: Ensured accurate paths and configurations in Docker Compose file to avoid path-related issues.
+4. Volume Setup Challenges: struggled with setting up volumes in Docker Compose as I didn't realize the need to explicitly mount the volume.
+
+## Setup
+
+### Backend Setup
+
+1. Navigate to the backend directory.
+2. Create an .env file with necessary environment variables (for the purpose of this task the env is availabe on the github repo).
+3. Run the following command to start the backend service:
+
+```bash
+docker-compose --env-file .env up
+```
+
+### Frontend Setup
+
+1. Navigate to the frontend directory.
+2. Run the following command to start the frontend service:
+
+```
+docker-compose up
+```
+
+## Benefits of Dockerization
+
+By Dockerizing the MERN stack application, the following benefits are achieved:
+
+- **Consistency**: Ensures consistent development and production environments.
+- **Dependency Management**: Simplifies handling of dependencies and libraries.
+- **Isolation**: Provides isolation for each component, enhancing security.
+- **Portability**: Facilitates easy deployment across different environments.
+- **Efficiency**: Improves development cycles and collaboration.
+- **Scalability**: Enables seamless scaling using container orchestration tools.
+
+## Dockerignore
+
+A .dockerignore file is used to ignore the node_modules directory during Docker builds. This is important to avoid unnecessarily copying large amount of files into the Docker image.
